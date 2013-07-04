@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 import gdata.spreadsheet.service
 import gdata.docs.service
@@ -12,7 +14,7 @@ import base64
 class GoogleConnection(object):
     
     def __init__(self, credentials):
-        self.credentials = credentials       
+        self.credentials = credentials
         self.authenticate(self.credentials)
 
 
@@ -37,9 +39,9 @@ class GoogleConnection(object):
         # Split the username and password
         return base64.b64decode(credentials).split(':', 1)
 
-    def get_key(self, object):
+    def get_key(self, obj):
         """Get the unique gdocs key identifier for the supplied object"""
-        return object.id.text.split('/')[-1].replace('spreadsheet%3A','')
+        return obj.id.text.split('/')[-1]
 
 class Document(GoogleConnection):
     
@@ -88,7 +90,7 @@ class SpreadSheet(GoogleConnection):
             # Create the spreadsheet if it doesn't exist
             if self.ssheet is None:
                 self.ssheet = self.doc.add_spreadsheet(name)
-    
+
     def move_to_folder(self, target_folder):
         key = self.get_key(self.ssheet)
         self.doc.move_to_folder(self.ssheet,target_folder)
@@ -144,6 +146,7 @@ class SpreadSheet(GoogleConnection):
         """Get a feed of all worksheets in the supplied spreadsheet, \
         optionally restricted by title.
         """
+        # XXX self.sshet does not get updated: self.ssheet = name
     
         # Create a query that restricts the spreadsheet feed to documents
         # having the supplied title.

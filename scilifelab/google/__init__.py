@@ -18,10 +18,12 @@ def _to_unicode(str, encoding='utf-8'):
     return str
 
 
-def get_credentials(encoded_credentials_file):
+def get_credentials(config):
     """Get the encoded credentials from the supplied file"""
 
     encoded_credentials = None
+    gdocs = config.get("gdocs_upload", {})
+    encoded_credentials_file = gdocs.get("gdocs_credentials", None)
     if encoded_credentials_file is not None and os.path.exists(encoded_credentials_file):
         with open(encoded_credentials_file) as fh:
             encoded_credentials = fh.read().strip()
